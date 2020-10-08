@@ -16,5 +16,5 @@ COUNT=$5
 
 sudo sync
 sudo sysctl -w vm.drop_caches=3
-sudo trace-cmd record -c --max-graph-depth 0 -p function_graph -g ${SYS_READ} -g ${SYS_WRITE} -F ${EXEC} ${TEST_CASE} ${BS} ${COUNT} ${TEST_FILE}
+sudo trace-cmd record -c --max-graph-depth 0 -p function_graph -F ${EXEC} ${TEST_CASE} ${BS} ${COUNT} ${TEST_FILE}
 trace-cmd report >${LOG_DIR}/${TEST_ID}.txt
