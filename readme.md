@@ -17,21 +17,20 @@ trace-cmd
 
 # 3. Building
 
-cd /path/to/LabStor  
+```
+cd /path/to/linux-bio-km   
 mkdir build  
 cd build
-cmake ../ -DCMAKE_INSTALL_PREFIX="/path/to/install"  
+cmake ../
 make -j4  
-make install
+```
 
 ## 4. Enable HugePages (optional)
-
-### 4-1. Create a HugePage cache
 
 HugPages have been named as a significant way to reduce overheads for large,
 sequential I/O in memory mapped files. You can enable HugePages as follows:
 
-#### 4-1-1. Find the HugePage size
+### 4-1. Find the HugePage size
 
 You can find the set of support HugePage sizes by running the following:
 ```
@@ -41,7 +40,7 @@ ls /sys/kernel/mm/hugepages
 See which sizes are supported. Hopefully something between 2MB to 16MB is 
 supported. Note: this will show page sizes in KB, not MB.
 
-#### 4-1-2. Edit the kernel boot parameters
+### 4-2. Edit the kernel boot parameters
 
 For the GRUB bootloader, open the grub config file as follows:
 
@@ -173,14 +172,7 @@ This will output a (.json.collapsed.pruned) file to the LOG_DIR.
 
 We want to bypass as many overheads introduced by the Linux kernel as possible.
 In this experiment, we test multiple approaches for putting data on a disk and
-reading data from a disk. We perform the following tests:
-* Performance of fwrite  
-* Performance of fwrite/fflush  
-* Performance of fwrite with 2MB HugePages  
-* Performance of fwrite/fflush with 2MB HugePages  
-* Performance of write with O_DIRECT  
-* Performance of write with O_DIRECT and 2MB HugePages  
-* Performance of a kernel module that directly calls submit_bio()  
+reading data from a disk.
 
 ### 5-2-1. Set environment variables
 
