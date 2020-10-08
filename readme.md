@@ -155,8 +155,6 @@ export TEST_FILE="/path/to/whatever..."
 export LOG_DIR="/path/to/log/directory/..."  
 ```
 
-NOTE: your log directory MUST end in a trailing slash.
-
 ### 5-2-2. Setup the kernel module
 
 ```
