@@ -160,7 +160,7 @@ export LOG_DIR="/path/to/log/directory/..."
 ```
 make build-km
 make insert-km
-./mount /dev/[DEVICE]
+sudo ./mount /dev/[DEVICE]
 make remove-km
 ```
 
