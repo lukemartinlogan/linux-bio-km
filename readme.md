@@ -158,10 +158,10 @@ export LOG_DIR="/path/to/log/directory/..."
 ### 5-2-2. Setup the kernel module
 
 ```
-make build-linux-driver-io-km
-make insert-linux-driver-io-km
+make build-km
+make insert-km
 ./mount /dev/[DEVICE]
-make remove-linux-driver-io-km
+make remove-km
 ```
 
 Mount uses a device file, such as /dev/sda; don't use partitions such as

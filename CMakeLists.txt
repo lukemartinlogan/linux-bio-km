@@ -61,13 +61,13 @@ target_link_libraries(mount time-linux-driver-io-um)
 
 add_executable(verify-write ${TIME_LINUX_DRIVER_IO_ROOT}/verify-write.c)
 
-add_custom_target(build-linux-driver-io COMMAND bash ${BUILD_LINUX_DRIVER_IO_SH} 1 ${TIME_LINUX_DRIVER_IO_ROOT})
-add_custom_target(insert-linux-driver-io COMMAND sudo insmod ${TIME_LINUX_DRIVER_IO_EXEC})
-add_custom_target(remove-linux-driver-io COMMAND sudo rmmod time_linux_driver_io_km)
-add_custom_target(check-linux-driver-io COMMAND lsmod | grep time_linux_driver_io_km)
-add_custom_target(check-linux-driver-io-klog COMMAND dmesg | grep time_linux_driver_io_km)
-add_custom_target(clean-linux-driver-io COMMAND bash ${BUILD_LINUX_DRIVER_IO_SH} 2 ${TIME_LINUX_DRIVER_IO_ROOT})
-add_custom_target(clean-linux-driver-io-klog COMMAND sudo dmesg --clear)
+add_custom_target(build-km COMMAND bash ${BUILD_LINUX_DRIVER_IO_SH} 1 ${TIME_LINUX_DRIVER_IO_ROOT})
+add_custom_target(insert-km COMMAND sudo insmod ${TIME_LINUX_DRIVER_IO_EXEC})
+add_custom_target(remove-km COMMAND sudo rmmod time_linux_driver_io_km)
+add_custom_target(check-km COMMAND lsmod | grep time_linux_driver_io_km)
+add_custom_target(check-klog COMMAND dmesg | grep time_linux_driver_io_km)
+add_custom_target(clean-km COMMAND bash ${BUILD_LINUX_DRIVER_IO_SH} 2 ${TIME_LINUX_DRIVER_IO_ROOT})
+add_custom_target(clean-klog COMMAND sudo dmesg --clear)
 
 ######GENERAL TIMER TEST
 add_executable(time-transfer-methods-exec ${TIME_TRANSFER_METHODS_ROOT}/time-transfer-methods.cpp)
