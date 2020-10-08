@@ -96,13 +96,14 @@ environment variable.
 You can find the system call names as follows:
 
 ```
-cat trace-all-syscalls.txt | grep sys_open
-cat trace-all-syscalls.txt | grep sys_read
-cat trace-all-syscalls.txt | grep sys_write
-cat trace-all-syscalls.txt | grep sys_close
+cat trace-all-syscalls.txt | grep [sS]y[sS]_open
+cat trace-all-syscalls.txt | grep [sS]y[sS]_read
+cat trace-all-syscalls.txt | grep [sS]y[sS]_write
+cat trace-all-syscalls.txt | grep [sS]y[sS]_close
 ```
 
-The trace-all-syscalls.txt is located in your working directory.
+The trace-all-syscalls.txt is located in your working directory. It should
+be something like __x64_sys_read or SyS_read. It will not be do_sys_read().
 
 ### 5-1-2. Set environment variables
 
