@@ -13,20 +13,20 @@ void buffered_write(size_t blocksz, int count, char *path)
 {
     char *buffer = (char*)aligned_alloc(4096, blocksz);
     if(buffer == NULL) {
-        printf("Could not allocate memory\n");
+        printf("Could not allocate memory (buffered_write)\n");
         exit(1);
     }
     memset(buffer, 0, blocksz);
 
     FILE *f = fopen(path, "w");
     if(f == NULL) {
-        printf("Could not open file (%s)\n", path);
+        printf("Could not open file (buffered_write) (%s)\n", path);
         exit(1);
     }
     for(int i = 0; i < count; i++) {
         int cnt = fwrite(buffer, 1, blocksz, f);
         if (cnt != blocksz) {
-            printf("Could not write to file (%s)\n", path);
+            printf("Could not write to file (buffered_write) (%s)\n", path);
             exit(1);
         }
     }
@@ -38,20 +38,20 @@ void direct_write(size_t blocksz, int count, char *path)
 {
     char *buffer = (char*)aligned_alloc(4096, blocksz);
     if(buffer == NULL) {
-        printf("Could not allocate memory\n");
+        printf("Could not allocate memory (direct_write)\n");
         exit(1);
     }
     memset(buffer, 0, blocksz);
 
     int fd = open(path, O_DIRECT | O_WRONLY);
     if(fd < 0) {
-        printf("Could not open file (%s)\n", path);
+        printf("Could not open file (direct_write) (%s)\n", path);
         exit(1);
     }
     for(int i = 0; i < count; i++) {
         int cnt = write(fd, buffer, blocksz);
         if (cnt < 0) {
-            printf("Could not write to file (%s)\n", path);
+            printf("Could not write to file (direct_write) (%s)\n", path);
             exit(1);
         }
     }
@@ -70,7 +70,7 @@ void buffered_read(size_t blocksz, int count, char *path)
 
     FILE *f = fopen(path, "r");
     if(f == NULL) {
-        printf("Could not open file (%s)\n", path);
+        printf("Could not open file (buffered_read) (%s)\n", path);
         exit(1);
     }
     for(int i = 0; i < count; i++) {
@@ -88,20 +88,20 @@ void direct_read(size_t blocksz, int count, char *path)
 {
     char *buffer = (char*)aligned_alloc(4096, blocksz);
     if(buffer == NULL) {
-        printf("Could not allocate memory\n");
+        printf("Could not allocate memory (direct_read)\n");
         exit(1);
     }
     memset(buffer, 0, blocksz);
 
     int fd = open(path, O_DIRECT | O_RDONLY);
     if(fd < 0) {
-        printf("Could not open file (%s)\n", path);
+        printf("Could not open file (direct_read) (%s)\n", path);
         exit(1);
     }
     for(int i = 0; i < count; i++) {
         int cnt = read(fd, buffer, blocksz);
         if (cnt < 0) {
-            printf("Could not write to file (%s)\n", path);
+            printf("Could not write to file (direct_read) (%s)\n", path);
             exit(1);
         }
     }
