@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lukemartinlogan/Documents/Projects/PhD/linux-bio-km/test/trace-syscalls/trace-posix-syscalls.cpp
+fcntl.h
+-
+unistd.h
+-
+string
+-
+

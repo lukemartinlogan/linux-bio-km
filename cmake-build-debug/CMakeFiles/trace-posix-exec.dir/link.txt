@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -g   CMakeFiles/trace-posix-exec.dir/test/trace-syscalls/trace-posix-syscalls.cpp.o  -o trace-posix-exec 

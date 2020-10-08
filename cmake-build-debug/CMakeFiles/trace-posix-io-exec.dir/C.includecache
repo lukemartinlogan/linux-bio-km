@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lukemartinlogan/Documents/Projects/PhD/linux-bio-km/test/trace-transfer-methods/trace-posix-io.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+unistd.h
+-
+fcntl.h
+-
+stddef.h
+-
+sys/mman.h
+-
+linux/mman.h
+-
+

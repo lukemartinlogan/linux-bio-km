@@ -1,0 +1,1 @@
+/usr/bin/cc -g -g   CMakeFiles/verify-write.dir/test/time-transfer-methods/submit-bio-driver/verify-write.c.o  -o verify-write 

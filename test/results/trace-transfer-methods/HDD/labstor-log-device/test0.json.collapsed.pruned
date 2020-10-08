@@ -1,0 +1,71 @@
+{
+   "name": "root",
+   "value": 10145731.356999988,
+   "children": {
+      "sys_write": {
+         "name": "sys_write",
+         "value": 10145656.322999988,
+         "children": {
+            "vfs_write": {
+               "name": "vfs_write",
+               "value": 10142352.572000012,
+               "children": {
+                  "__vfs_write": {
+                     "name": "__vfs_write",
+                     "value": 10130331.122999992,
+                     "children": {
+                        "new_sync_write": {
+                           "name": "new_sync_write",
+                           "value": 10129423.933,
+                           "children": {
+                              "blkdev_write_iter": {
+                                 "name": "blkdev_write_iter",
+                                 "value": 10127962.258000007,
+                                 "children": {
+                                    "__generic_file_write_iter": {
+                                       "name": "__generic_file_write_iter",
+                                       "value": 10122103.754000016,
+                                       "children": {
+                                          "generic_file_direct_write": {
+                                             "name": "generic_file_direct_write",
+                                             "value": 10106832.206000008,
+                                             "children": {
+                                                "blkdev_direct_IO": {
+                                                   "name": "blkdev_direct_IO",
+                                                   "value": 10100194.100000001,
+                                                   "children": {
+                                                      "__blkdev_direct_IO_simple": {
+                                                         "name": "__blkdev_direct_IO_simple",
+                                                         "value": 10098688.651999997,
+                                                         "children": {
+                                                            "io_schedule": {
+                                                               "name": "io_schedule",
+                                                               "value": 10057198.606000008,
+                                                               "children": {
+                                                                  "schedule": {
+                                                                     "name": "schedule",
+                                                                     "value": 10023444.287999999,
+                                                                     "children": {}
+                                                                  }
+                                                               }
+                                                            }
+                                                         }
+                                                      }
+                                                   }
+                                                }
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

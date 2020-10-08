@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lukemartinlogan/Documents/Projects/PhD/linux-bio-km/test/time-transfer-methods/submit-bio-driver/verify-write.c
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+fcntl.h
+-
+string.h
+-
+unistd.h
+-
+
