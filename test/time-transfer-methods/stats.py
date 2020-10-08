@@ -30,7 +30,8 @@ if len(sys.argv) != 3:
     sys.exit(1)
 
 log_dir = sys.argv[1]
-size_re = re.search("(\d+)[kKmMgGbB]", sys.argv[2])
+print(sys.argv[2])
+size_re = re.search("(\d+)([kKmMgGbB])", sys.argv[2])
 size = int(size_re.group(1))
 size_unit = size_re.group(2)
 log_files = get_all_txt(log_dir)
