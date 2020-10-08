@@ -254,7 +254,7 @@ void test6(size_t filesz, char *path, char *log_dir)
     ktime_t ns;
     init_labstor_syscalls();
     if(write_bypass(path, 0, buffer, filesz, &ns) < 0) {
-        printf("Could not complete I/O (test6)");
+        printf("Could not complete write (test6)");
         exit(1);
     }
 
@@ -281,7 +281,7 @@ void test7(size_t filesz, char *path, char *log_dir)
     t.Start();
     int cnt = fread(buffer, 1, filesz, f);
     if(cnt != filesz) {
-        printf("Could not write to file (test7)\n");
+        printf("Could not read from file (test7)\n");
         exit(1);
     }
     t.End();
@@ -311,7 +311,7 @@ void test8(size_t filesz, char *path, char *log_dir)
     t.Start();
     int cnt = fread(buffer, 1, filesz, f);
     if(cnt != filesz) {
-        printf("Could not write to file (test8)\n");
+        printf("Could not read from file (test8)\n");
         exit(1);
     }
     fclose(f);
@@ -341,7 +341,7 @@ void test9(size_t filesz, char *path, char *log_dir)
     t.Start();
     int cnt = fread(buffer, 1, filesz, f);
     if(cnt != filesz) {
-        printf("Could not write to file (test9)\n");
+        printf("Could not read from file (test9)\n");
         exit(1);
     }
     t.End();
@@ -371,7 +371,7 @@ void test10(size_t filesz, char *path, char *log_dir)
     t.Start();
     int cnt = fread(buffer, 1, filesz, f);
     if(cnt != filesz) {
-        printf("Could not write to file (test10)\n");
+        printf("Could not read from file (test10)\n");
         exit(1);
     }
     fclose(f);
@@ -401,7 +401,7 @@ void test11(size_t filesz, char *path, char *log_dir)
     t.Start();
     int cnt = read(fd, buffer, filesz);
     if(cnt < 0) {
-        printf("Could not write to file (test11)\n");
+        printf("Could not read from file (test11)\n");
         exit(1);
     }
     close(fd);
@@ -430,7 +430,7 @@ void test12(size_t filesz, char *path, char *log_dir)
     t.Start();
     int cnt = read(fd, buffer, filesz);
     if(cnt < 0) {
-        printf("Could not write to file (test12)\n");
+        printf("Could not read from file (test12)\n");
         exit(1);
     }
     close(fd);
@@ -455,7 +455,7 @@ void test13(size_t filesz, char *path, char *log_dir)
     ktime_t ns;
     init_labstor_syscalls();
     if(read_bypass(path, 0, buffer, filesz, &ns) < 0) {
-        printf("Could not complete I/O (test13)");
+        printf("Could not complete read (test13)");
         exit(1);
     }
 
