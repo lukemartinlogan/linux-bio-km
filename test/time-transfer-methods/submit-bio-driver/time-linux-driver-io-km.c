@@ -203,9 +203,6 @@ static void io_complete(struct bio *bio)
     struct bio_priv_data *priv = bio->bi_private;
     priv->end_time = ktime_get_ns();
     complete(&priv->done);
-    /*if(bio->bi_status == BLK_STS_OK && priv->next_bio) {
-        submit_bio(priv->next_bio);
-    }*/
 }
 
 static inline struct page **convert_usr_buf(void *usr_buf, size_t length, int *num_pagesp)
@@ -411,9 +408,6 @@ static void io_bypass(char *dev, size_t sector, void *usr_buf, size_t length, in
         return;
     }
 
-    //Get start time
-    start_time = ktime_get_ns();
-
     //Convert user buffer to physical pages
     pages = convert_usr_buf(usr_buf, length, &num_pages);
     if(pages == NULL) {
@@ -429,8 +423,11 @@ static void io_bypass(char *dev, size_t sector, void *usr_buf, size_t length, in
         return;
     }
 
+    //Get start time
+    start_time = ktime_get_ns();
+
     //Submit bios
-    /*if(!submit_bios(bios, num_bios)) {
+    if(!submit_bios(bios, num_bios)) {
         kfree(pages);
         free_bios(bios, num_bios);
         send_msg_to_usr(-1, 0, pid);
@@ -443,7 +440,7 @@ static void io_bypass(char *dev, size_t sector, void *usr_buf, size_t length, in
         free_bios(bios, num_bios);
         send_msg_to_usr(-1, 0, pid);
         return;
-    }*/
+    }
 
     //Get end time
     //end_time = get_end_time(bios, num_bios);
