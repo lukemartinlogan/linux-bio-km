@@ -86,48 +86,18 @@ sudo su
 This test allows you to see what happens in the kernel when you call read()/write().
 This test depends on trace-cmd.
 
-### 5-1-1. Determine the syscall names
-
-Before we can trace what happens with these system calls, we have to 
-figure out their names. In order to do this, run the following
-command:  
-
-```
-export TEST_FILE="/path/to/wherever"
-make trace-all-syscalls
-```  
-TEST_FILE will be used to perform I/O with by the test. You must set this
-environment variable.
-  
-You can find the system call names as follows:
-
-```
-cat trace-all-syscalls.txt | grep [sS]y[sS]_open
-cat trace-all-syscalls.txt | grep [sS]y[sS]_read
-cat trace-all-syscalls.txt | grep [sS]y[sS]_write
-cat trace-all-syscalls.txt | grep [sS]y[sS]_close
-```
-
-The trace-all-syscalls.txt is located in your working directory. It should
-be something like __x64_sys_read or SyS_read. It will not be do_sys_read().
-
-### 5-1-2. Set environment variables
+### 5-1-1. Set environment variables
 
 We must set:
 * Which device/file we want to perform I/O with  
 * Which directory we want to store the output logs from each test  
-* The system calls we want to trace
 
 ```
 export TEST_FILE="/path/to/whatever..."  
 export LOG_DIR="/path/to/log/directory/..." 
-export SYS_OPEN=__x64_sys_open  
-export SYS_READ=__x64_sys_read   
-export SYS_WRITE=__x64_sys_write  
-export SYS_CLOSE=__x64_sys_close  
 ```
 
-### 5-1-3. Get the trace
+### 5-1-2. Get the trace
 
 These will perform 4K I/O and trace the path to perform it.
 ```
@@ -141,7 +111,7 @@ You can use 4K, 64K, 1M and 10M instead of 100M as well.
 This will output function graph .txt files that are human-readable to your
 LOG_DIR.
 
-### 5-1-4. Parse the trace
+### 5-1-3. Parse the trace
 
 This will output a JSON file that aggregates the time measurements from
 the function graph to your LOG_DIR (.json.collapsed)
@@ -157,7 +127,7 @@ Note: this code will only work if the function stack is completely correct.
 When profiling very large I/O calls, the stack reproduction will drop
 curly braces that result in complications.
 
-### 5-1-5. Prune the trace (optional)
+### 5-1-4. Prune the trace (optional)
 
 This will output a JSON file that returns only the functions who makes up
 at least a THRESHOLD% of the total runtime of its parent function.

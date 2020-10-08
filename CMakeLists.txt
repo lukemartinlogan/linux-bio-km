@@ -8,19 +8,37 @@ set(CMAKE_CXX_FLAGS "-g")
 
 include_directories(include)
 
-##########TRACE SYSTEM CALLS
-set(TRACE_SYSCALLS_ROOT ${CMAKE_SOURCE_DIR}/test/trace-syscalls)
-set(TRACE_ALL_SYSCALLS_SH ${TRACE_SYSCALLS_ROOT}/trace-all-syscalls.sh)
-set(TRACE_POSIX_SYSCALLS_SH ${TRACE_SYSCALLS_ROOT}/trace-posix-syscalls.sh)
-set(TRACE_POSIX_EXEC ${CMAKE_CURRENT_BINARY_DIR}/trace-posix-exec)
-add_executable(trace-posix-exec ${TRACE_SYSCALLS_ROOT}/trace-posix-syscalls.cpp)
+##########TRACE TRANSFER METHODS TEST CASES
+set(TRACE_TRANSFER_METHODS_ROOT ${CMAKE_SOURCE_DIR}/test/trace-transfer-methods)
+set(TRACE_TRANSFER_EXEC ${CMAKE_CURRENT_BINARY_DIR}/trace-posix-io-exec)
+set(TRACE_TRANSFER_METHODS_SH ${TRACE_TRANSFER_METHODS_ROOT}/trace-posix-io.sh)
+set(PARSE_TRANSFER_METHODS_SH ${TRACE_TRANSFER_METHODS_ROOT}/parse.sh)
+set(PRUNE_TRANSFER_METHODS_SH ${TRACE_TRANSFER_METHODS_ROOT}/prune.sh)
+add_executable(trace-posix-io-exec ${TRACE_TRANSFER_METHODS_ROOT}/trace-posix-io.c)
 
-add_custom_target(trace-all-syscalls)
-add_custom_command(TARGET trace-all-syscalls COMMAND bash ${TRACE_ALL_SYSCALLS_SH} 3 ${TRACE_POSIX_EXEC} ${CMAKE_CURRENT_BINARY_DIR}/trace-all-syscalls.txt)
-add_custom_target(trace-posix-syscalls)
-add_custom_command(TARGET trace-posix-syscalls COMMAND bash ${TRACE_POSIX_SYSCALLS_SH} 0 ${TRACE_POSIX_EXEC} ${CMAKE_CURRENT_BINARY_DIR}/trace-posix-syscalls.txt)
+set(SIZES 4K 64K 1M 10M 100M)
+set(ITERS 1024 1024 100 100 10)
+set(IO_TYPES buffered-write direct-write buffered-read direct-read)
+set(IO_TYPE_IDS 0 1 2 3)
 
-##########TIME TRANSFER METHODS
+list(LENGTH SIZES SIZES_LEN)
+math(EXPR SIZES_IDS_LAST "${SIZES_LEN} - 1")
+foreach(SIZE_IDX RANGE ${SIZES_IDS_LAST})
+    list(GET SIZES ${SIZE_IDX} SIZE)
+    list(GET ITERS ${SIZE_IDX} ITER)
+
+    list(LENGTH IO_TYPES IO_TYPES_LEN)
+    math(EXPR IO_TYPES_IDS_LAST "${IO_TYPES_LEN} - 1")
+    foreach(IO_TYPE_IDX RANGE ${IO_TYPES_IDS_LAST})
+        list(GET IO_TYPES ${IO_TYPE_IDX} IO_TYPE)
+        list(GET IO_TYPE_IDS ${IO_TYPE_IDX} IO_TYPE_ID)
+        add_custom_target(trace-${IO_TYPE}-${SIZE} COMMAND bash ${TRACE_TRANSFER_METHODS_SH} "${TRACE_TRANSFER_EXEC} ${IO_TYPE_ID} ${SIZE} ${ITER}" ${IO_TYPE}-${SIZE})
+        add_custom_target(parse-${IO_TYPE}-${SIZE} COMMAND bash ${PARSE_TRANSFER_METHODS_SH} ${TRACE_TRANSFER_METHODS_ROOT} ${IO_TYPE}-${SIZE})
+        add_custom_target(prune-${IO_TYPE}-${SIZE} COMMAND bash ${PRUNE_TRANSFER_METHODS_SH} ${TRACE_TRANSFER_METHODS_ROOT} ${IO_TYPE}-${SIZE})
+    endforeach()
+endforeach()
+
+##########TIME TRANSFER METHODS TEST CASES
 set(TIME_TRANSFER_METHODS_ROOT ${CMAKE_SOURCE_DIR}/test/time-transfer-methods)
 set(TIME_TRANSFER_METHODS_EXEC ${CMAKE_CURRENT_BINARY_DIR}/time-transfer-methods-exec)
 set(TIME_TRANSFER_METHODS_SH ${TIME_TRANSFER_METHODS_ROOT}/time-transfer-methods.sh)
@@ -50,7 +68,7 @@ add_custom_target(check-linux-driver-io-klog COMMAND dmesg | grep time_linux_dri
 add_custom_target(clean-linux-driver-io COMMAND bash ${BUILD_LINUX_DRIVER_IO_SH} 2 ${TIME_LINUX_DRIVER_IO_ROOT})
 add_custom_target(clean-linux-driver-io-klog COMMAND sudo dmesg --clear)
 
-######Test case CPP
+######GENERAL TIMER TEST
 add_executable(time-transfer-methods-exec ${TIME_TRANSFER_METHODS_ROOT}/time-transfer-methods.cpp)
 add_dependencies(time-transfer-methods-exec time-linux-driver-io-um)
 target_include_directories(time-transfer-methods-exec PRIVATE ${TIME_LINUX_DRIVER_IO_ROOT})
@@ -74,34 +92,3 @@ foreach(SIZE ${SIZES})
     add_custom_target(time-bypass-read-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 13 ${SIZE} 25)
     add_custom_target(time-transfer-stats-${SIZE} COMMAND bash ${TIME_TRANSFER_STATS_SH} ${TIME_TRANSFER_STATS_PY} ${SIZE})
 endforeach()
-
-##########TRACE TRANSFER METHODS TEST CASES
-set(TRACE_TRANSFER_METHODS_ROOT ${CMAKE_SOURCE_DIR}/test/trace-transfer-methods)
-set(TRACE_TRANSFER_EXEC ${CMAKE_CURRENT_BINARY_DIR}/trace-posix-io-exec)
-set(TRACE_TRANSFER_METHODS_SH ${TRACE_TRANSFER_METHODS_ROOT}/trace-posix-io.sh)
-set(PARSE_TRANSFER_METHODS_SH ${TRACE_TRANSFER_METHODS_ROOT}/parse.sh)
-set(PRUNE_TRANSFER_METHODS_SH ${TRACE_TRANSFER_METHODS_ROOT}/prune.sh)
-add_executable(trace-posix-io-exec ${TRACE_TRANSFER_METHODS_ROOT}/trace-posix-io.c)
-
-set(SIZES 4K 64K 1M 10M 100M)
-set(ITERS 1024 1024 100 100 10)
-set(IO_TYPES buffered-write direct-write buffered-read direct-read)
-set(IO_TYPE_IDS 0 1 2 3)
-
-list(LENGTH SIZES SIZES_LEN)
-math(EXPR SIZES_IDS_LAST "${SIZES_LEN} - 1")
-foreach(SIZE_IDX RANGE ${SIZES_IDS_LAST})
-    list(GET SIZES ${SIZE_IDX} SIZE)
-    list(GET ITERS ${SIZE_IDX} ITER)
-
-    list(LENGTH IO_TYPES IO_TYPES_LEN)
-    math(EXPR IO_TYPES_IDS_LAST "${IO_TYPES_LEN} - 1")
-    foreach(IO_TYPE_IDX RANGE ${IO_TYPES_IDS_LAST})
-        list(GET IO_TYPES ${IO_TYPE_IDX} IO_TYPE)
-        list(GET IO_TYPE_IDS ${IO_TYPE_IDX} IO_TYPE_ID)
-        add_custom_target(trace-${IO_TYPE}-${SIZE} COMMAND bash ${TRACE_TRANSFER_METHODS_SH} ${IO_TYPE}-${SIZE} ${TRACE_TRANSFER_EXEC} ${IO_TYPE_ID} ${SIZE} ${ITER})
-        add_custom_target(parse-${IO_TYPE}-${SIZE} COMMAND bash ${PARSE_TRANSFER_METHODS_SH} ${TRACE_TRANSFER_METHODS_ROOT} ${IO_TYPE}-${SIZE})
-        add_custom_target(prune-${IO_TYPE}-${SIZE} COMMAND bash ${PRUNE_TRANSFER_METHODS_SH} ${TRACE_TRANSFER_METHODS_ROOT} ${IO_TYPE}-${SIZE})
-    endforeach()
-endforeach()
-
