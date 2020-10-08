@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g -g  -shared -Wl,-soname,libtime-linux-driver-io-um.so -o libtime-linux-driver-io-um.so CMakeFiles/time-linux-driver-io-um.dir/test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-um.c.o 
