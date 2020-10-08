@@ -12,20 +12,21 @@
 size_t to_size(char *num)
 {
     int len = strlen(num);
-    if(num[len-1] == 'k') {
+    if(num[len-1] == 'k' || num[len-1] == 'K') {
         return (size_t)atoi(num)*(1ull<<10);
     }
-    else if(num[len-1] == 'm') {
+    else if(num[len-1] == 'm' || num[len-1] == 'M') {
         return (size_t)atoi(num)*(1ull<<20);
     }
-    else if(num[len-1] == 'g') {
+    else if(num[len-1] == 'g' || num[len-1] == 'G') {
         return (size_t)atoi(num)*(1ull<<30);
     }
-    else if(num[len-1] == 'b') {
+    else if(num[len-1] == 'b' || num[len-1] == 'B') {
         return (size_t)atoi(num);
     }
 
     printf("Invalid integer type\n");
+    exit(1);
 }
 
 int main(int argc, char **argv)

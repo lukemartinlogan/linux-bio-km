@@ -249,7 +249,7 @@ void test6(size_t filesz, char *path, char *log_dir)
         printf("Could not allocate memory (test6)\n");
         exit(1);
     }
-    memset(buffer, 0, filesz);
+    memset(buffer, 8, filesz);
 
     ktime_t ns;
     init_labstor_syscalls();
@@ -450,7 +450,7 @@ void test13(size_t filesz, char *path, char *log_dir)
         printf("Could not allocate memory (test13)\n");
         exit(1);
     }
-    memset(buffer, 0, filesz);
+    memset(buffer, 8, filesz);
 
     ktime_t ns;
     init_labstor_syscalls();

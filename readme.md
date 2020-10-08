@@ -191,8 +191,17 @@ make time-direct-read-huge-100M
 make time-bypass-read-100M
 ```
 
+You can verify the correctness of the KM as follows:
+```
+./verify-write ${TEST_FILE} 0 100M 8
+```
+The bypass test will write the value 8 to the first 100M of the device. 
+
 NOTE: these tests will drop the OSes page cache before each iteration, which
 requires root priveliges.
+    
+NOTE: The kernel module will break if you use too large of a block size.
+No more than 100M since kernel can only alloc first 4GB of RAM. 
 
 ### 5-2-4. Get statistics
 
