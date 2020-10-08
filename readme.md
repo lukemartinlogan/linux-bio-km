@@ -193,7 +193,8 @@ make time-bypass-read-100M
 
 You can verify the correctness of the KM as follows:
 ```
-./verify-write ${TEST_FILE} 0 100M 8
+sudo ./verify-write ${TEST_FILE} 0B 100M 8
+sudo dd if=/dev/zero of=${TEST_FILE} bs=100M count=1
 ```
 The bypass test will write the value 8 to the first 100M of the device. 
 
