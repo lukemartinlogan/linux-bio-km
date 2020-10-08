@@ -1,2 +1,13 @@
 cmake-build-debug
 .idea
+test/time-transfer-methods/submit-bio-driver/.time-linux-driver-io-km.ko.cmd
+test/time-transfer-methods/submit-bio-driver/.time-linux-driver-io-km.mod.cmd
+test/time-transfer-methods/submit-bio-driver/.time-linux-driver-io-km.mod.o.cmd
+test/time-transfer-methods/submit-bio-driver/.time-linux-driver-io-km.o.cmd
+test/time-transfer-methods/submit-bio-driver/Module.symvers
+test/time-transfer-methods/submit-bio-driver/modules.order
+test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.ko
+test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.mod
+test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.mod.c
+test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.mod.o
+test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.o
