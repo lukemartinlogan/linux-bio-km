@@ -20,8 +20,7 @@ def parse_test_id(log_file):
     if match:
         return int(match.group(1))
     else:
-        print("Log does not represent a valid test case")
-        sys.exit(1)
+        return -1
 
 
 ######MAIN
@@ -39,6 +38,8 @@ log_files = get_all_txt(log_dir)
 dict_df = []
 for log_file in log_files:
     test_id = parse_test_id(log_file)
+    if test_id == -1:
+        continue
     with open(log_file) as log:
         log_data = log.readlines()
         for line in log_data:
