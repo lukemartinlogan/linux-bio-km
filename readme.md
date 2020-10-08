@@ -121,7 +121,7 @@ export SYS_WRITE=__x64_sys_write
 export SYS_CLOSE=__x64_sys_close  
 ```
 
-### 5-3-2. Get the trace
+### 5-1-3. Get the trace
 
 These will perform 4K I/O and trace the path to perform it.
 ```
@@ -135,7 +135,7 @@ You can use 4K, 64K, 1M and 10M instead of 100M as well.
 This will output function graph .txt files that are human-readable to your
 LOG_DIR.
 
-### 5-3-3. Parse the trace
+### 5-1-4. Parse the trace
 
 This will output a JSON file that aggregates the time measurements from
 the function graph to your LOG_DIR (.json.collapsed)
@@ -151,7 +151,7 @@ Note: this code will only work if the function stack is completely correct.
 When profiling very large I/O calls, the stack reproduction will drop
 curly braces that result in complications.
 
-### 5-3-4. Prune the trace
+### 5-1-5. Prune the trace (optional)
 
 This will output a JSON file that returns only the functions who makes up
 at least a THRESHOLD% of the total runtime of its parent function.
