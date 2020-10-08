@@ -24,9 +24,7 @@ cmake ../ -DCMAKE_INSTALL_PREFIX="/path/to/install"
 make -j4  
 make install
 
-# 4. Usage
-
-## 4-1. System environment
+## 4. Enable HugePages (optional)
 
 ### 4-1. Create a HugePage cache
 
@@ -78,7 +76,7 @@ SOURCES:
 
 # 5. Tests
 
-## 5-1. Determining the name of syscalls
+## 5-1. Profile different I/O methods
 
 This test allows you to see what happens in the kernel when you call read()/write().
 This test depends on trace-cmd.
@@ -90,54 +88,86 @@ figure out their names. In order to do this, run the following
 command:  
 
 ```
+export TEST_FILE="/path/to/wherever"
 make trace-all-syscalls
 ```  
-
-This will create a file in your build directory called trace-all-syscalls.txt.
-It is a human-readable text file that contains the system calls used when
-executing the program test/trace-syscalls/trace-posix-syscalls.cpp. Look at it and 
-figure out which system calls correspond to POSIX open, read, write, and close
-syscalls.
-
-### 5-1-2. Set environment variables
+TEST_FILE will be used to perform I/O with by the test. You must set this
+environment variable.
   
-Before running this test, you must set the following environment variables:
-* SYS_OPEN
-* SYS_READ
-* SYS_WRITE
-* SYS_CLOSE
-* TEST_FILE
-
-I could set these variables to track read() and write() syscalls:
+You can find the system call names as follows:
 
 ```
+cat trace-all-syscalls.txt | grep sys_open
+cat trace-all-syscalls.txt | grep sys_read
+cat trace-all-syscalls.txt | grep sys_write
+cat trace-all-syscalls.txt | grep sys_close
+```
+
+The trace-all-syscalls.txt is located in your working directory.
+
+### 5-1-2. Set environment variables
+
+We must set:
+* Which device/file we want to perform I/O with  
+* Which directory we want to store the output logs from each test  
+* The system calls we want to trace
+
+```
+export TEST_FILE="/path/to/whatever..."  
+export LOG_DIR="/path/to/log/directory/..." 
 export SYS_OPEN=__x64_sys_open  
 export SYS_READ=__x64_sys_read   
 export SYS_WRITE=__x64_sys_write  
 export SYS_CLOSE=__x64_sys_close  
 ```
 
-The actual names of these system calls may vary depending on your OS. 
-SyS_read is also common for the read() syscall for example. You'll
-have to look into your trace-all-syscalls.txt file to find out for sure.
+### 5-3-2. Get the trace
 
-You must also set which file you want to perform the reads/writes to.
-You can do so as follows:
+These will perform 4K I/O and trace the path to perform it.
+```
+make trace-buffered-read-4K
+make trace-direct-read-4K
+make trace-buffered-write-4K
+make trace-direct-write-4K
+``` 
+You can use 4K, 64K, 1M and 10M instead of 100M as well.
+
+This will output function graph .txt files that are human-readable to your
+LOG_DIR.
+
+### 5-3-3. Parse the trace
+
+This will output a JSON file that aggregates the time measurements from
+the function graph to your LOG_DIR (.json.collapsed)
 
 ```
-export TEST_FILE="/path/to/whatever...
-```  
+make parse-buffered-read-4K
+make parse-direct-read-4K
+make parse-buffered-write-4K
+make parse-direct-write-4K
+``` 
 
-### 5-1-3. Get the function graph
+Note: this code will only work if the function stack is completely correct.
+When profiling very large I/O calls, the stack reproduction will drop
+curly braces that result in complications.
 
-Now we can trace the read()/write() or pread()/pwrite() system calls.
+### 5-3-4. Prune the trace
+
+This will output a JSON file that returns only the functions who makes up
+at least a THRESHOLD% of the total runtime of its parent function.
 
 ```
-make trace-posix-syscalls
-```  
+export THRESHOLD=[some-fraction]  
+make prune-buffered-read-4K
+make prune-direct-read-4K
+make prune-buffered-write-4K
+make prune-direct-write-4K
+``` 
 
-This will create a file in your build directory called trace-posix-syscalls.txt.
-    
+An example value for THRESHOLD would be .5 or .25. It should be any value
+between 0 and 1.
+
+This will output a (.json.collapsed.pruned) file to the LOG_DIR.
 
 ## 5-2. Time different I/O methods
 
@@ -200,8 +230,6 @@ make time-direct-read-huge-100M
 make time-bypass-read-100M
 ```
 
-You can use 4K, 64K, 1M and 10M instead of 100M as well.
-
 NOTE: these tests will drop the OSes page cache before each iteration, which
 requires root priveliges.
 
@@ -214,66 +242,3 @@ case.
 
 This will also store a CSV and JSON file in the log directory containing the 
 statistics.
-
-
-## 5-3. Profile different I/O methods
-
-This test looks into the stack that gets called for different I/O syscalls.  
-
-### 5-3-1. Set environment variables
-
-First, we must set which device/file we want to perform I/O with and then
-set which directory we want to store the output logs from each test.
-
-```
-export TEST_FILE="/path/to/whatever..."  
-export LOG_DIR="/path/to/log/directory/..."  
-```
-
-### 5-3-2. Get the trace
-
-These will perform 4K I/O and trace the path to perform it.
-```
-make trace-buffered-read-4K
-make trace-direct-read-4K
-make trace-buffered-write-4K
-make trace-direct-write-4K
-``` 
-You can use 4K, 64K, 1M and 10M instead of 100M as well.
-
-This will output function graph .txt files that are human-readable to your
-LOG_DIR.
-
-### 5-3-3. Parse the trace
-
-This will output a JSON file that aggregates the time measurements from
-the function graph to your LOG_DIR (.json.collapsed)
-
-```
-make parse-buffered-read-4K
-make parse-direct-read-4K
-make parse-buffered-write-4K
-make parse-direct-write-4K
-``` 
-
-Note: this code will only work if the function stack is completely correct.
-When profiling very large I/O calls, the stack reproduction will drop
-curly braces that result in complications.
-
-### 5-3-4. Prune the trace
-
-This will output a JSON file that returns only the functions who makes up
-at least a THRESHOLD% of the total runtime of its parent function.
-
-```
-export THRESHOLD=[some-fraction]  
-make prune-buffered-read-4K
-make prune-direct-read-4K
-make prune-buffered-write-4K
-make prune-direct-write-4K
-``` 
-
-An example value for THRESHOLD would be .5 or .25. It should be any value
-between 0 and 1.
-
-This will output a (.json.collapsed.pruned) file to the LOG_DIR.

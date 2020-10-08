@@ -263,6 +263,207 @@ void test6(size_t filesz, char *path, char *log_dir)
     t.Append();
 }
 
+void test7(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test7");
+    char *buffer = (char*)aligned_alloc(4096, filesz);
+    if(buffer == NULL) {
+        printf("Could not allocate memory (test7)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    FILE *f = fopen(path, "r");
+    if(f == NULL) {
+        printf("Could not open file (test7)\n");
+        exit(1);
+    }
+    t.Start();
+    int cnt = fread(buffer, 1, filesz, f);
+    if(cnt != filesz) {
+        printf("Could not write to file (test7)\n");
+        exit(1);
+    }
+    t.End();
+    fclose(f);
+    free(buffer);
+
+    t.CalcDiff();
+    printf("Time [test=7]: %lf msec\n", t.msec());
+    t.Append();
+}
+
+void test8(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test8");
+    char *buffer = (char*)aligned_alloc(4096, filesz);
+    if(buffer == NULL) {
+        printf("Could not allocate memory (test8)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    FILE *f = fopen(path, "r");
+    if(f == NULL) {
+        printf("Could not open file (test8)\n");
+        exit(1);
+    }
+    t.Start();
+    int cnt = fread(buffer, 1, filesz, f);
+    if(cnt != filesz) {
+        printf("Could not write to file (test8)\n");
+        exit(1);
+    }
+    fclose(f);
+    t.End();
+    free(buffer);
+
+    t.CalcDiff();
+    printf("Time [test=8]: %lf msec\n", t.msec());
+    t.Append();
+}
+
+void test9(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test9");
+    char *buffer = (char*)mmap(NULL, filesz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+    if(buffer == MAP_FAILED) {
+        perror("Could not allocate memory (test9)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    FILE *f = fopen(path, "r");
+    if(f == NULL) {
+        printf("Could not open file (test9)\n");
+        exit(1);
+    }
+    t.Start();
+    int cnt = fread(buffer, 1, filesz, f);
+    if(cnt != filesz) {
+        printf("Could not write to file (test9)\n");
+        exit(1);
+    }
+    t.End();
+    fclose(f);
+    munmap(buffer, filesz);
+
+    t.CalcDiff();
+    printf("Time [test=9]: %lf msec\n", t.msec());
+    t.Append();
+}
+
+void test10(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test10");
+    char *buffer = (char*)mmap(NULL, filesz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+    if(buffer == MAP_FAILED) {
+        printf("Could not allocate memory (test10)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    FILE *f = fopen(path, "r");
+    if(f == NULL) {
+        printf("Could not open file (test10)\n");
+        exit(1);
+    }
+    t.Start();
+    int cnt = fread(buffer, 1, filesz, f);
+    if(cnt != filesz) {
+        printf("Could not write to file (test10)\n");
+        exit(1);
+    }
+    fclose(f);
+    t.End();
+    munmap(buffer, filesz);
+
+    t.CalcDiff();
+    printf("Time [test=10]: %lf msec\n", t.msec());
+    t.Append();
+}
+
+void test11(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test11");
+    char *buffer = (char*)aligned_alloc(4096, filesz);
+    if(buffer == NULL) {
+        printf("Could not allocate memory (test11)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    int fd = open(path, O_DIRECT | O_RDONLY);
+    if(fd < 0) {
+        printf("Could not open file (test11)\n");
+        exit(1);
+    }
+    t.Start();
+    int cnt = read(fd, buffer, filesz);
+    if(cnt < 0) {
+        printf("Could not write to file (test11)\n");
+        exit(1);
+    }
+    close(fd);
+    t.End();
+
+    t.CalcDiff();
+    printf("Time [test=11]: %lf msec\n", t.msec());
+    t.Append();
+}
+
+void test12(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test12");
+    char *buffer = (char*)mmap(NULL, filesz, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+    if(buffer == MAP_FAILED) {
+        printf("Could not allocate memory (test12)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    int fd = open(path, O_DIRECT | O_RDONLY);
+    if(fd < 0) {
+        printf("Could not open file (test12)\n");
+        exit(1);
+    }
+    t.Start();
+    int cnt = read(fd, buffer, filesz);
+    if(cnt < 0) {
+        printf("Could not write to file (test12)\n");
+        exit(1);
+    }
+    close(fd);
+    t.End();
+    munmap(buffer, filesz);
+
+    t.CalcDiff();
+    printf("Time [test=12]: %lf msec\n", t.msec());
+    t.Append();
+}
+
+void test13(size_t filesz, char *path, char *log_dir)
+{
+    Timer t(log_dir, "test13");
+    char *buffer = (char*)aligned_alloc(4096, filesz);
+    if(buffer == NULL) {
+        printf("Could not allocate memory (test13)\n");
+        exit(1);
+    }
+    memset(buffer, 0, filesz);
+
+    ktime_t ns;
+    init_labstor_syscalls();
+    if(read_bypass(path, 0, buffer, filesz, &ns) < 0) {
+        printf("Could not complete I/O (test13)");
+        exit(1);
+    }
+
+    t.SetNsec(ns);
+    printf("Time [test=13]: %lf msec\n", t.msec());
+    t.Append();
+}
+
 size_t to_size(char *num)
 {
     int len = strlen(num);
@@ -294,6 +495,13 @@ int main(int argc, char **argv)
         printf("4: write(file, O_DIRECT)\n");
         printf("5: write(file, O_DIRECT); huge pages\n");
         printf("6: write_bypass()\n");
+        printf("7: fread(file)\n");
+        printf("8: fread(file)/flush\n");
+        printf("9: fread(file); huge pages\n");
+        printf("10: fread(file)/flush; huge pages\n");
+        printf("11: read(file, O_DIRECT)\n");
+        printf("12: read(file, O_DIRECT); huge pages\n");
+        printf("13: read_bypass()\n");
         exit(1);
     }
 
@@ -329,6 +537,34 @@ int main(int argc, char **argv)
         }
         case 6: {
             test6(filesz, path, log_dir);
+            break;
+        }
+        case 7: {
+            test7(filesz, path, log_dir);
+            break;
+        }
+        case 8: {
+            test8(filesz, path, log_dir);
+            break;
+        }
+        case 9: {
+            test9(filesz, path, log_dir);
+            break;
+        }
+        case 10: {
+            test10(filesz, path, log_dir);
+            break;
+        }
+        case 11: {
+            test11(filesz, path, log_dir);
+            break;
+        }
+        case 12: {
+            test12(filesz, path, log_dir);
+            break;
+        }
+        case 13: {
+            test13(filesz, path, log_dir);
             break;
         }
     }
