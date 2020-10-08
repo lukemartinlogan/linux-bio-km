@@ -75,12 +75,6 @@ SOURCES:
 
 # 5. Tests
 
-You should perform all tests as root user.
-
-```
-sudo su
-```
-
 ## 5-1. Profile different I/O methods
 
 This test allows you to see what happens in the kernel when you call read()/write().
