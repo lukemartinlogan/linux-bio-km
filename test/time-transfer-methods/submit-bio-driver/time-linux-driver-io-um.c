@@ -12,7 +12,7 @@ static int sockfd;
 static struct sockaddr_nl my_addr = {0};
 static struct sockaddr_nl kern_addr = {0};
 
-static inline struct nlmsghdr *send_msg_to_kernel(int code, char *dev, size_t sector, void *usr_buf, size_t length)
+static inline struct nlmsghdr *send_msg_to_kernel(int code, const char *dev, size_t sector, void *usr_buf, size_t length)
 {
 	int num_io_rqs = 0;
 	struct nlmsghdr *nlh;

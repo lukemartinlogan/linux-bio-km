@@ -16,8 +16,8 @@ private:
     int fd_;
 public:
     PosixClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, int test_id) : FileClient(path, btype, req_size, val, log_dir, test_id) {
-        int fd = open(path.c_str(), O_DIRECT | O_RDWR);
-        if(fd < 0) {
+        fd_ = open(path.c_str(), O_DIRECT | O_RDWR);
+        if(fd_ < 0) {
             std::cout << "Could not open file: " << path << std::endl;
             exit(1);
         }
@@ -28,6 +28,7 @@ public:
     }
 
     void Read(size_t off, size_t size) {
+        lseek(fd_, off, SEEK_SET);
         t_.Resume();
         int cnt = read(fd_, buffer_.Get(), req_size_);
         t_.Pause();
@@ -39,6 +40,7 @@ public:
     }
 
     void Write(size_t off, size_t size) {
+        lseek(fd_, off, SEEK_SET);
         t_.Resume();
         int cnt = write(fd_, buffer_.Get(), req_size_);
         t_.Pause();

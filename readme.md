@@ -169,23 +169,23 @@ Mount uses a device file, such as /dev/sda; don't use partitions such as
 
 ### 5-2-3. Run tests
 
-You can run the following tests for 100M writes:
+You can run the following tests for 4K writes:
 ```
-make time-direct-write-100M  
-make time-direct-write-huge-100M  
-make time-bypass-write-100M
+make time-direct-write-4K  
+make time-direct-write-huge-4K  
+make time-bypass-write-4K
 ```
 
-And for 100M reads:
+And for 4K reads:
 ```
-make time-direct-read-100M  
-make time-direct-read-huge-100M  
-make time-bypass-read-100M
+make time-direct-read-4K  
+make time-direct-read-huge-4K  
+make time-bypass-read-4K
 ```
 
 You can verify the correctness of the KM as follows:
 ```
-sudo ./verify-write ${TEST_FILE} 0B 100M 8
+sudo ./verify-write ${TEST_FILE} 0B 4K 8
 sudo dd if=/dev/zero of=${TEST_FILE} bs=100M count=1
 ```
 The bypass test will write the value 8 to the first 100M of the device. 

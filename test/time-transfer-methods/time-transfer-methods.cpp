@@ -3,6 +3,7 @@
 #include "FileClientFactory.h"
 
 void SequentialRead(std::shared_ptr<FileClient> &client, size_t req_size, size_t iter) {
+    std::cout << iter << std::endl;
     for(size_t i = 0; i < iter; ++i) {
         client->Read(i*req_size, req_size);
     }
@@ -52,9 +53,18 @@ int main(int argc, char **argv)
     std::string path = argv[7];
     std::string log_dir = argv[8];
     std::shared_ptr<FileClient> client = FileClientFactory::Get(file_client_type, path, buf_type, req_size, test, log_dir, test);
-    if(rw) {
-        SequentialRead(client, req_size, iter);
-    } else {
-        SequentialWrite(client, req_size, iter);
+
+    std::cout << req_size << std::endl;
+    std::cout << iter << std::endl;
+    std::cout << rw << std::endl;
+    switch(rw) {
+        case 0: {
+            SequentialRead(client, req_size, iter);
+            break;
+        }
+        case 1: {
+            SequentialWrite(client, req_size, iter);
+            break;
+        }
     }
 }

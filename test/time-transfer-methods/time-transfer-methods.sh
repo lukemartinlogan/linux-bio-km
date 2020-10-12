@@ -5,12 +5,16 @@
 #LOG_DIR: the directory where you will store output logs
 
 CMD=$1
-TEST_CASE=$2
-SIZE_IN_MB=$3
-NUM_ITER=$4
+TEST_ID=$2
+INTERFACE=$3
+RW=$4
+BUFTYPE=$5
+REQ_SIZE=$6
+ITER=$7
+REPS=$8
 
-for ITER in $(seq 1 $NUM_ITER); do
+for REP in $(seq 1 ${REPS}); do
   sudo sync
   sudo sysctl -w vm.drop_caches=3
-  sudo ${CMD} ${TEST_CASE} ${SIZE_IN_MB} ${TEST_FILE} ${LOG_DIR}
+  sudo ${CMD} ${TEST_ID} ${INTERFACE} ${RW} ${BUFTYPE} ${REQ_SIZE} ${ITER} ${TEST_FILE} ${LOG_DIR}
 done
