@@ -29,9 +29,9 @@ public:
 
     void Read(size_t off, size_t size) {
         lseek(fd_, off, SEEK_SET);
-        t_.Resume();
+        t_.Start();
         int cnt = read(fd_, buffer_.Get(), req_size_);
-        t_.Pause();
+        t_.End();
 
         if(cnt != req_size_) {
             std::cout << "Could not read from file: " << path_ << std::endl;
@@ -41,9 +41,9 @@ public:
 
     void Write(size_t off, size_t size) {
         lseek(fd_, off, SEEK_SET);
-        t_.Resume();
+        t_.Start();
         int cnt = write(fd_, buffer_.Get(), req_size_);
-        t_.Pause();
+        t_.End();
 
         if(cnt != req_size_) {
             std::cout << "Could not write to file: " << path_ << std::endl;

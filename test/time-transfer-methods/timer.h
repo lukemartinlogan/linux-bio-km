@@ -9,16 +9,18 @@
 #include <cstdio>
 #include <string>
 #include <chrono>
+#include <list>
+#include <sstream>
 
 class Timer {
 private:
     std::string log_path_;
     std::chrono::steady_clock::time_point t1_;
     std::chrono::steady_clock::time_point t2_;
-    double msec_;
+    std::list<double> log_;
 
 public:
-    Timer() : msec_(0) {}
+    Timer() {}
     Timer(std::string log_dir, int test_id) {
         SetLogPath(log_dir, test_id);
     }
@@ -30,21 +32,17 @@ public:
             log_path_ = log_dir + "/" + "test" + std::to_string(test_id) + ".txt";
         }
     }
-    void Resume(void) {
+    void Start(void) {
         t1_ = std::chrono::steady_clock::now();
     }
-    void Pause(void) {
+    void End(void) {
         t2_ = std::chrono::steady_clock::now();
-        msec_ += std::chrono::duration_cast<std::chrono::duration<double>>(t2_ - t1_).count()*1000;
-    }
-    void Reset(void) {
-        msec_ = 0;
+        double msec = std::chrono::duration_cast<std::chrono::duration<double>>(t2_ - t1_).count()*1000;
+        log_.emplace_back(msec);
     }
     void AddNsec(unsigned long long ns) {
-        msec_ += ((double)(ns))/1000000;
-    }
-    double msec(void) {
-        return msec_;
+        double msec = ((double)(ns))/1000000;
+        log_.emplace_back(msec);
     }
     void Append(void) {
         FILE *log = fopen(log_path_.c_str(), "a+");
@@ -53,9 +51,13 @@ public:
             exit(1);
         }
         fseek(log, 0, SEEK_END);
-        std::string time = std::to_string(msec_) + "\n";
-        int cnt = fwrite(time.c_str(), 1, time.size(), log);
-        if(cnt != time.size()) {
+        std::stringstream ss;
+        for(double msec : log_) {
+            ss << std::to_string(msec) << "\n";
+        }
+        std::string times = ss.str();
+        int cnt = fwrite(times.c_str(), 1, times.size(), log);
+        if(cnt != times.size()) {
             std::cout << "Did not append to log" << std::endl;
             exit(1);
         }
