@@ -83,7 +83,10 @@ foreach(SIZE ${SIZES})
     add_custom_target(time-fwrite-flush-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 3 ${SIZE} 25)
     add_custom_target(time-direct-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 4 ${SIZE} 25)
     add_custom_target(time-direct-write-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 5 ${SIZE} 25)
-    add_custom_target(time-bypass-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 6 ${SIZE} 25)
+
+    #TODO: Iter = 25
+    add_custom_target(time-bypass-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 6 ${SIZE} 1)
+
     add_custom_target(time-fread-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 7 ${SIZE} 25)
     add_custom_target(time-fread-flush-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 8 ${SIZE} 25)
     add_custom_target(time-fread-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 9 ${SIZE} 25)

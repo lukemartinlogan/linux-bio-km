@@ -274,7 +274,7 @@ static inline struct bio **create_bios(struct dev_data *dd, struct page **pages,
     for(i = 0; i < niter; ++i) {
         bios[i] = create_bio(dd, pages + i*BIO_MAX_PAGES_ALLOC, BIO_MAX_PAGES_ALLOC, sector + i*BIO_MAX_PAGES_ALLOC*PAGE_TO_SECTOR, op);
         if(bios[i] == NULL) {
-            free_bios(bios, num_bios);
+            free_bios(bios, i);
             return NULL;
         }
         priv = bios[i]->bi_private;
@@ -305,17 +305,11 @@ static inline struct bio **create_bios(struct dev_data *dd, struct page **pages,
 static inline int submit_bios(struct bio **bios, int num_bios)
 {
     int i = 0;
-    blk_qc_t cookie;
     struct blk_plug plug;
 
     blk_start_plug(&plug);
     for(i = 0; i < num_bios; ++i) {
-        cookie = submit_bio(bios[i]);
-        if (!blk_qc_t_valid(cookie)) {
-            printk(KERN_INFO
-            "time_linux_driver_io_km: Could not submit bio\n");
-            return 0;
-        }
+        submit_bio(bios[i]);
     }
     blk_finish_plug(&plug);
     return 1;
@@ -360,7 +354,9 @@ static inline void free_bios(struct bio **bios, int num_bios)
 
     for(i = 0; i < num_bios; ++i) {
         if(bios[i] != NULL) {
-            kfree(bios[i]->bi_private);
+            if(bios[i]->bi_private) {
+                kfree(bios[i]->bi_private);
+            }
             bio_put(bios[i]);
         } else {
             break;
@@ -445,8 +441,7 @@ static void io_bypass(char *dev, size_t sector, void *usr_buf, size_t length, in
     }
 
     //Get end time
-    //end_time = get_end_time(bios, num_bios);
-    end_time = ktime_get_ns();
+    end_time = get_end_time(bios, num_bios);
 
     //Send completion to user
     send_msg_to_usr(0, end_time - start_time, pid);
