@@ -53,10 +53,6 @@ int main(int argc, char **argv)
     std::string path = argv[7];
     std::string log_dir = argv[8];
     std::shared_ptr<FileClient> client = FileClientFactory::Get(file_client_type, path, buf_type, req_size, test, log_dir, test);
-
-    std::cout << req_size << std::endl;
-    std::cout << iter << std::endl;
-    std::cout << rw << std::endl;
     switch(rw) {
         case 0: {
             SequentialRead(client, req_size, iter);
