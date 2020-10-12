@@ -76,23 +76,17 @@ target_include_directories(time-transfer-methods-exec PRIVATE ${TIME_LINUX_DRIVE
 target_link_libraries(time-transfer-methods-exec time-linux-driver-io-um)
 
 set(SIZES 4K 64K 1M 10M 100M)
+set(ITER 100)
+set(REP 1)
 foreach(SIZE ${SIZES})
-    add_custom_target(time-fwrite-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 0 ${SIZE} 25)
-    add_custom_target(time-fwrite-flush-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 1 ${SIZE} 25)
-    add_custom_target(time-fwrite-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 2 ${SIZE} 25)
-    add_custom_target(time-fwrite-flush-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 3 ${SIZE} 25)
-    add_custom_target(time-direct-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 4 ${SIZE} 25)
-    add_custom_target(time-direct-write-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 5 ${SIZE} 25)
 
-    #TODO: Iter = 25
-    add_custom_target(time-bypass-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 6 ${SIZE} 25)
+    add_custom_target(time-direct-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 4 ${SIZE} ${ITER} ${REP})
+    add_custom_target(time-direct-write-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 5 ${SIZE} ${ITER} ${REP})
+    add_custom_target(time-bypass-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 6 ${SIZE} ${ITER} ${REP})
 
-    add_custom_target(time-fread-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 7 ${SIZE} 25)
-    add_custom_target(time-fread-flush-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 8 ${SIZE} 25)
-    add_custom_target(time-fread-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 9 ${SIZE} 25)
-    add_custom_target(time-fread-flush-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 10 ${SIZE} 25)
-    add_custom_target(time-direct-read-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 11 ${SIZE} 25)
-    add_custom_target(time-direct-read-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 12 ${SIZE} 25)
-    add_custom_target(time-bypass-read-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 13 ${SIZE} 25)
+    add_custom_target(time-direct-read-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 11 ${SIZE} ${ITER} ${REP})
+    add_custom_target(time-direct-read-huge-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 12 ${SIZE} ${ITER} ${REP})
+    add_custom_target(time-bypass-read-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} 13 ${SIZE} ${ITER} ${REP})
+
     add_custom_target(time-transfer-stats-${SIZE} COMMAND bash ${TIME_TRANSFER_STATS_SH} ${TIME_TRANSFER_STATS_PY} ${SIZE})
 endforeach()

@@ -171,10 +171,6 @@ Mount uses a device file, such as /dev/sda; don't use partitions such as
 
 You can run the following tests for 100M writes:
 ```
-make time-fwrite-100M  
-make time-fwrite-flush-100M  
-make time-fwrite-huge-100M  
-make time-fwrite-flush-huge-100M  
 make time-direct-write-100M  
 make time-direct-write-huge-100M  
 make time-bypass-write-100M
@@ -182,10 +178,6 @@ make time-bypass-write-100M
 
 And for 100M reads:
 ```
-make time-fread-100M  
-make time-fread-flush-100M  
-make time-fread-huge-100M  
-make time-fread-flush-huge-100M  
 make time-direct-read-100M  
 make time-direct-read-huge-100M  
 make time-bypass-read-100M
