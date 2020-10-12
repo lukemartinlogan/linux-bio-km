@@ -24,9 +24,9 @@ void init_labstor_syscalls(void);
 
 int mount_dev(char *dev);
 
-int write_bypass(const char *dev, size_t sector, void *usr_buf, size_t length, ktime_t *time_ns);
+int write_bypass(const char *dev, size_t off, void *usr_buf, size_t length, ktime_t *time_ns);
 
-int read_bypass(const char *dev, size_t sector, void *usr_buf, size_t length, ktime_t *time_ns);
+int read_bypass(const char *dev, size_t off, void *usr_buf, size_t length, ktime_t *time_ns);
 
 #ifdef __cplusplus
 }

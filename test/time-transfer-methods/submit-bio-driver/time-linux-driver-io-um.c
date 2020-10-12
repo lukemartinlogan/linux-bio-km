@@ -86,11 +86,12 @@ int mount_dev(char *dev)
 	return code;
 }
 
-int write_bypass(const char *dev, size_t sector, void *usr_buf, size_t length, ktime_t *time_nsptr)
+int write_bypass(const char *dev, size_t off, void *usr_buf, size_t length, ktime_t *time_nsptr)
 {
 	struct nlmsghdr *nlh;
 	struct km_request *rq;
 	int code;
+	size_t sector = off/512;
 	
 	nlh = send_msg_to_kernel(2, dev, sector, usr_buf, length);
 	if(nlh == NULL) {
@@ -108,11 +109,12 @@ int write_bypass(const char *dev, size_t sector, void *usr_buf, size_t length, k
 	return code;
 }
 
-int read_bypass(const char *dev, size_t sector, void *usr_buf, size_t length, ktime_t *time_nsptr)
+int read_bypass(const char *dev, size_t off, void *usr_buf, size_t length, ktime_t *time_nsptr)
 {
     struct nlmsghdr *nlh;
     struct km_request *rq;
     int code;
+    size_t sector = off/512;
 
     nlh = send_msg_to_kernel(3, dev, sector, usr_buf, length);
     if(nlh == NULL) {
