@@ -11,3 +11,6 @@ test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.mod
 test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.mod.c
 test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.mod.o
 test/time-transfer-methods/submit-bio-driver/time-linux-driver-io-km.o
+build*
+cmake-build*
+.idea
