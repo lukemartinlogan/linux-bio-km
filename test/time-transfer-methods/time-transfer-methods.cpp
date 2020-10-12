@@ -3,7 +3,6 @@
 #include "FileClientFactory.h"
 
 void SequentialRead(std::shared_ptr<FileClient> &client, size_t req_size, size_t iter) {
-    std::cout << iter << std::endl;
     for(size_t i = 0; i < iter; ++i) {
         client->Read(i*req_size, req_size);
     }
