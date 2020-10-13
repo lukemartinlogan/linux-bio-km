@@ -40,7 +40,7 @@ for log_file in log_files:
             })
 
 df = pd.DataFrame(dict_df)
-df = df.groupby(by=["test_id", "size"])
+df = df.groupby(by=["test_id", "size", "size_unit"])
 mean_df = df.mean().reset_index().rename(columns={"msec": "mean_msec"})
 std_df = df.std().reset_index().rename(columns={"msec": "std_msec"})
 min_df = df.min().reset_index().rename(columns={"msec": "min_msec"})
