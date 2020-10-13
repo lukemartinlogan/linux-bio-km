@@ -17,7 +17,7 @@ protected:
     std::string path_;
 
 public:
-    FileClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, int test_id) : path_(path), value_(val), req_size_(req_size), buffer_(btype, req_size, val), t_(log_dir, test_id) {}
+    FileClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, std::string test_id) : path_(path), value_(val), req_size_(req_size), buffer_(btype, req_size, val), t_(log_dir, test_id) {}
     virtual void Read(size_t off, size_t size) = 0;
     virtual void Write(size_t off, size_t size) = 0;
     void LogTime() {

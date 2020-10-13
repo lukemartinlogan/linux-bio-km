@@ -21,15 +21,15 @@ private:
 
 public:
     Timer() {}
-    Timer(std::string log_dir, int test_id) {
+    Timer(std::string log_dir, std::string test_id) {
         SetLogPath(log_dir, test_id);
     }
-    void SetLogPath(std::string log_dir, int test_id) {
+    void SetLogPath(std::string log_dir, std::string test_id) {
         if(log_dir.back() == '/') {
-            log_path_ = log_dir + "test" + std::to_string(test_id) + ".txt";
+            log_path_ = log_dir + test_id + ".txt";
         }
         else {
-            log_path_ = log_dir + "/" + "test" + std::to_string(test_id) + ".txt";
+            log_path_ = log_dir + "/" + test_id + ".txt";
         }
     }
     void Start(void) {

@@ -15,7 +15,7 @@ class PosixClient : public FileClient {
 private:
     int fd_;
 public:
-    PosixClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, int test_id) : FileClient(path, btype, req_size, val, log_dir, test_id) {
+    PosixClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, std::string test_id) : FileClient(path, btype, req_size, val, log_dir, test_id) {
         fd_ = open(path.c_str(), O_DIRECT | O_RDWR);
         if(fd_ < 0) {
             std::cout << "Could not open file: " << path << std::endl;

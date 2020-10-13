@@ -43,7 +43,7 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    int test = atoi(argv[1]);
+    std::string test_id = argv[1];
     FileClientType file_client_type = static_cast<FileClientType>(atoi(argv[2]));
     int rw = atoi(argv[3]);
     BufferType buf_type = static_cast<BufferType>(atoi(argv[4]));
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     size_t iter = atoi(argv[6]);
     std::string path = argv[7];
     std::string log_dir = argv[8];
-    std::shared_ptr<FileClient> client = FileClientFactory::Get(file_client_type, path, buf_type, req_size, test, log_dir, test);
+    std::shared_ptr<FileClient> client = FileClientFactory::Get(file_client_type, path, buf_type, req_size, 8, log_dir, test_id);
     switch(rw) {
         case 0: {
             SequentialRead(client, req_size, iter);

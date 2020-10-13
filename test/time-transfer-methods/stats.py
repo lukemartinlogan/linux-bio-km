@@ -15,14 +15,6 @@ def get_all_txt(dir):
             paths.append(path)
     return paths
 
-def parse_test_id(log_file):
-    match = re.search("test([0-9]+).txt", log_file)
-    if match:
-        return int(match.group(1))
-    else:
-        return -1
-
-
 ######MAIN
 if len(sys.argv) != 3:
     print("Usage: python3 /path/to/time-transfer-stats.py [log-dir] [size]")
@@ -37,14 +29,11 @@ log_files = get_all_txt(log_dir)
 
 dict_df = []
 for log_file in log_files:
-    test_id = parse_test_id(log_file)
-    if test_id == -1:
-        continue
     with open(log_file) as log:
         log_data = log.readlines()
         for line in log_data:
             dict_df.append({
-                "test_id": test_id,
+                "test_id": log_file,
                 "msec": float(line),
                 "size": size,
                 "size_unit": size_unit

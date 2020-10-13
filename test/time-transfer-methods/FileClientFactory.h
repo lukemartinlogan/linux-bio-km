@@ -17,7 +17,7 @@ enum class FileClientType {
 
 class FileClientFactory {
 public:
-    static std::shared_ptr<FileClient> Get(FileClientType type, std::string path, BufferType btype, size_t req_size, char value, std::string log_dir, int test_id) {
+    static std::shared_ptr<FileClient> Get(FileClientType type, std::string path, BufferType btype, size_t req_size, char value, std::string log_dir, std::string test_id) {
         switch(type) {
             case FileClientType::kPosixClient: {
                 return std::make_shared<PosixClient>(path, btype, req_size, value, log_dir, test_id);

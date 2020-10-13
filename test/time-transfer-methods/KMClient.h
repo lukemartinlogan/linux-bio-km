@@ -14,7 +14,7 @@ class KMClient : public FileClient {
 private:
     int fd_;
 public:
-    KMClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, int test_id) : FileClient(path, btype, req_size, val, log_dir, test_id) {
+    KMClient(std::string path, BufferType btype, size_t req_size, char val, std::string log_dir, std::string test_id) : FileClient(path, btype, req_size, val, log_dir, test_id) {
         init_labstor_syscalls();
     }
 
