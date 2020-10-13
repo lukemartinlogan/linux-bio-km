@@ -10,6 +10,7 @@ profiling the Linux I/O stack and for comparing raw performance.
 # 2. Dependencies
 
 Linux 4.15+  
+linux-headers-4.15+  
 cmake 3.10 or higher  
 C++17 compiler  
 C11 compiler  
