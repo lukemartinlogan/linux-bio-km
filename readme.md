@@ -186,9 +186,9 @@ make time-bypass-read-4K
 You can verify the correctness of the KM as follows:
 ```
 sudo ./verify-write ${TEST_FILE} 0B 4K 8
-sudo dd if=/dev/zero of=${TEST_FILE} bs=100M count=1
+sudo dd if=/dev/zero of=${TEST_FILE} bs=400K count=1
 ```
-The bypass test will write the value 8 to the first 100M of the device. 
+The bypass test will write the value 8 to the first 400K of the device. 
 
 NOTE: these tests will drop the OSes page cache before each iteration, which
 requires root priveliges.
