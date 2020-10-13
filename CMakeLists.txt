@@ -75,8 +75,8 @@ add_dependencies(time-transfer-methods-exec time-linux-driver-io-um)
 target_include_directories(time-transfer-methods-exec PRIVATE ${TIME_LINUX_DRIVER_IO_ROOT})
 target_link_libraries(time-transfer-methods-exec time-linux-driver-io-um)
 
-set(SIZES 4K 64K 1M 10M 100M)
-set(ITER 100)
+set(SIZES 4K 64K 1M 10M)
+set(ITER 1000)
 set(REP 1)
 foreach(SIZE ${SIZES})
 
