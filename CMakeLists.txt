@@ -120,6 +120,6 @@ foreach(SIZE ${SIZES})
     set(BUFTYPE 0)
     set(TEST_ID time-bypass-write-${SIZE})
     add_custom_target(time-bypass-write-${SIZE} COMMAND bash ${TIME_TRANSFER_METHODS_SH} ${TIME_TRANSFER_METHODS_EXEC} ${TEST_ID} ${INTERFACE} ${RW} ${BUFTYPE} ${SIZE} ${ITER} ${REP})
-
-    add_custom_target(time-transfer-stats-${SIZE} COMMAND bash ${TIME_TRANSFER_STATS_SH} ${TIME_TRANSFER_STATS_PY} ${SIZE})
 endforeach()
+
+add_custom_target(time-transfer-stats COMMAND bash ${TIME_TRANSFER_STATS_SH} ${TIME_TRANSFER_STATS_PY})

@@ -16,19 +16,19 @@ def get_all_txt(dir):
     return paths
 
 ######MAIN
-if len(sys.argv) != 3:
-    print("Usage: python3 /path/to/time-transfer-stats.py [log-dir] [size]")
+if len(sys.argv) != 2:
+    print("Usage: python3 /path/to/time-transfer-stats.py [log-dir]")
     sys.exit(1)
 
 log_dir = sys.argv[1]
 print(sys.argv[2])
-size_re = re.search("(\d+)([kKmMgGbB])", sys.argv[2])
-size = int(size_re.group(1))
-size_unit = size_re.group(2)
 log_files = get_all_txt(log_dir)
 
 dict_df = []
 for log_file in log_files:
+    size_re = re.search("(\d+)([kKmMgGbB])", log_file)
+    size = int(size_re.group(1))
+    size_unit = size_re.group(2)
     with open(log_file) as log:
         log_data = log.readlines()
         for line in log_data:
