@@ -28,7 +28,7 @@ MODULE_ALIAS_FS("time_linux_driver_io_km");
 #define MAX_DEVNAME 32
 #define MAX_MOUNTED_BDEVS 32
 #define BDEV_ACCESS_FLAGS FMODE_READ | FMODE_WRITE | FMODE_PREAD | FMODE_PWRITE //| FMODE_EXCL
-#define BIO_MAX_PAGES_ALLOC 64
+#define BIO_MAX_PAGES_ALLOC 256
 #define PAGE_TO_SECTOR (PAGE_SIZE >> 9)
 
 //Data definitions
@@ -410,7 +410,6 @@ static void io_bypass(char *dev, size_t sector, void *usr_buf, size_t length, in
         send_msg_to_usr(-1, 0, pid);
         return;
     }
-    printk(KERN_INFO "time_linux_driver_io_km: Num user pages: %d\n", num_pages);
     
     //Create bios
     bios = create_bios(dd, pages, num_pages, sector, op, &num_bios);
@@ -419,7 +418,6 @@ static void io_bypass(char *dev, size_t sector, void *usr_buf, size_t length, in
         send_msg_to_usr(-1, 0, pid);
         return;
     }
-    printk(KERN_INFO "time_linux_driver_io_km: Num BIOS: %d\n", num_bios);
 
     //Get start time
     start_time = ktime_get_ns();
