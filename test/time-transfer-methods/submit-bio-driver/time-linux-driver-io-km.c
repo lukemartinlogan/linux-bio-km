@@ -104,12 +104,9 @@ static void server_loop(struct sk_buff *skb)
     struct km_request *rq;
     int pid;
 
-    printk(KERN_INFO "time_linux_driver_io_km: Entering: %s\n", __FUNCTION__);
-
     nlh=(struct nlmsghdr*)skb->data;
     rq = (struct km_request*)nlmsg_data(nlh);
     pid = nlh->nlmsg_pid; /*pid of sending process */
-    printk(KERN_INFO "time_linux_driver_io_km: Code %d", rq->code);
 
     switch(rq->code) {
         case 1: {
