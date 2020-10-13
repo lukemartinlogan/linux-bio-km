@@ -21,7 +21,6 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 log_dir = sys.argv[1]
-print(sys.argv[2])
 log_files = get_all_txt(log_dir)
 
 dict_df = []
